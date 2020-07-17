@@ -1,3 +1,4 @@
+<%@ page import="java.sql.ResultSet" %>
 <%@ page import="vn.edu.nlu.fit.Utill.Util" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -33,6 +34,8 @@
     <script src="https://kit.fontawesome.com/c25baca2b9.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0&appId=289033432376850&autoLogAppEvents=1" nonce="a15h05sZ"></script>
 <!--[if lte IE 9]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
 <![endif]-->
@@ -110,7 +113,10 @@
                     </form>
                     <div class="social-login">
                         <span class="social-label" style="font-family: Arial">Hoặc đăng nhập bằng</span>
+                        <div class="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
                         <ul class="socials">
+
+
                             <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
                             <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
                             <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
@@ -294,6 +300,54 @@
         });
     }
 </script>
+<%--  đăng nhập bằng tài khoản facebook, google--%>
+<script>
+
+    function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+        console.log('statusChangeCallback');
+        console.log(response);                   // The current login status of the person.
+        if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+            testAPI();
+        } else {                                 // Not logged into your webpage or we are unable to tell.
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into this webpage.';
+        }
+    }
+
+
+    function checkLoginState() {               // Called when a person is finished with the Login Button.
+        FB.getLoginStatus(function(response) {   // See the onlogin handler
+            statusChangeCallback(response);
+        });
+    }
+
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '289033432376850',
+            cookie     : true,                     // Enable cookies to allow the server to access the session.
+            xfbml      : true,                     // Parse social plugins on this webpage.
+            version    : 'v7.0'           // Use this Graph API version for this call.
+        });
+
+
+        FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+            statusChangeCallback(response);        // Returns the login status.
+        });
+    };
+
+    function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me', function(response) {
+            console.log('Successful login for: ' + response.name);
+            document.getElementById('status').innerHTML =
+                'Thanks for logging in, ' + response.name + '!';
+        });
+    }
+
+</script>
+
+
 
 <script src="js/active.js"></script>
 
